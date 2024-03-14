@@ -167,9 +167,14 @@ public class binary {
         int decimalValue = Integer.parseInt(binaryString, 2);
 
         // Convert decimal integer to hexadecimal string
-        String hexadecimal = Integer.toHexString(decimalValue);
+        String hexadecimal = Integer.toHexString(decimalValue).toUpperCase();
 
-        return hexadecimal.toUpperCase(); // Convert to uppercase for consistency
+        // Pad with zeros if necessary
+        while (hexadecimal.length() < 4) {
+            hexadecimal = hexadecimal + "0" ;
+        }
+
+        return hexadecimal; // Convert to uppercase for consistency
     }
 
 
@@ -216,6 +221,9 @@ public class binary {
 
         int FinalExponent = 15;
         FinalExponent = FinalExponent + ePlus;
+        if(firstOne == -1){
+            FinalExponent = 0;
+        }
         String exponentRep = decimalToBinary(FinalExponent);
 
         char[] mantissaChar = Mantissa(binaryArray);
@@ -228,8 +236,9 @@ public class binary {
         System.out.println("Sign Bit: " + signBit);
         System.out.println("Exponent Representation: " + exponentRep);
         System.out.println("Mantissa: " + mantissa);
-        System.out.println("Binary: " + finalInBinary);
+        //System.out.println("Binary: " + finalInBinary);
         System.out.println("Hex: " + finalInHex);
+        
     }
 
 

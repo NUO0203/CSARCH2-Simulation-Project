@@ -150,16 +150,23 @@ public class decimal {
         return binaryStringBuilder.toString();
     }
 
-    static int checkSign(Double DecimalInput){
-        int SignBit = 0;
-
-        if(DecimalInput >= 0 ){
-            return SignBit;
-        }else {
-            SignBit = 1;
-            return SignBit;
-        }    
+    static int checkSign(double DecimalInput) {
+        if (Double.compare(DecimalInput, 0.0) == 0) {
+            // DecimalInput is either 0.0 or -0.0
+            if (1 / DecimalInput == Double.NEGATIVE_INFINITY) {
+                // DecimalInput is -0.0
+                return 1;
+            } else {
+                // DecimalInput is 0.0
+                return 0;
+            }
+        } else if (DecimalInput > 0) {
+            return 0; // Positive number
+        } else {
+            return 1; // Negative number
+        }
     }
+    
 
      // Function to combine sign bit, exponent representation, and mantissa into a single char array
      static char[] combineAll(int signBit, String exponentRep, String mantissa) {
@@ -191,10 +198,16 @@ public class decimal {
         int decimalValue = Integer.parseInt(binaryString, 2);
 
         // Convert decimal integer to hexadecimal string
-        String hexadecimal = Integer.toHexString(decimalValue);
+        String hexadecimal = Integer.toHexString(decimalValue).toUpperCase();
 
-        return hexadecimal.toUpperCase(); // Convert to uppercase for consistency
+        // Pad with zeros if necessary
+        while (hexadecimal.length() < 4) {
+            hexadecimal = hexadecimal + "0" ;
+        }
+
+        return hexadecimal; // Convert to uppercase for consistency
     }
+
 
 
     public static void main(String[] args) {
@@ -245,6 +258,9 @@ public class decimal {
 
         int FinalExponent = 15;
         FinalExponent = FinalExponent + ePlus;
+        if(firstOne == -1){
+            FinalExponent = 0;
+        }
         String exponentRep = decimalToBinary(FinalExponent);
         if (exponentRep.endsWith(".")) {
             exponentRep = exponentRep.substring(0, exponentRep.length() - 1);
@@ -260,7 +276,7 @@ public class decimal {
         System.out.println("Sign Bit: " + signBit);
         System.out.println("Exponent Representation: " + exponentRep);
         System.out.println("Mantissa: " + mantissa);
-        System.out.println("Binary: " + finalInBinary);
+        //System.out.println("Binary: " + finalInBinary);
         System.out.println("Hex: " + finalInHex);
     }
 
