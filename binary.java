@@ -169,13 +169,43 @@ public class binary {
         // Convert decimal integer to hexadecimal string
         String hexadecimal = Integer.toHexString(decimalValue).toUpperCase();
 
-        // Pad with zeros if necessary
+        //Pad with zeros if necessary
         while (hexadecimal.length() < 4) {
-            hexadecimal = hexadecimal + "0" ;
+            hexadecimal = "0" + hexadecimal ;
         }
 
         return hexadecimal; // Convert to uppercase for consistency
     }
+
+    public static char[] denomalizedMantissa(char[] inputArray, int padding) {
+        // Find the index of the dot in the input array
+        int dotIndex = -1;
+        for (int i = 0; i < inputArray.length; i++) {
+            if (inputArray[i] == '.') {
+                dotIndex = i;
+                break;
+            }
+        }
+    
+        // Create a new array with the length of the input array minus the dot plus the padding
+        char[] result = new char[inputArray.length - 1 + padding];
+    
+        // Pad the most significant bit with zeros
+        for (int i = 0; i < padding; i++) {
+            result[i] = '0';
+        }
+    
+        // Copy characters from the input array, excluding the dot
+        int resultIndex = padding;
+        for (int i = 0; i < inputArray.length; i++) {
+            if (inputArray[i] != '.') {
+                result[resultIndex++] = inputArray[i];
+            }
+        }
+    
+        return result;
+    }
+    
 
 
     public static void main(String[] args) {
@@ -218,11 +248,22 @@ public class binary {
             ePlus = exponentInput + 0;
 
         }
+        
+        
+        
 
         int FinalExponent = 15;
         boolean denormalized = false;
         FinalExponent = FinalExponent + ePlus;
-        
+        int difference = 0;
+        if(ePlus < -14){
+            difference = ePlus + 14;
+            difference = Math.abs(difference);
+            difference--; //acount for the 1
+            System.out.println(difference);
+            FinalExponent = 0;
+            denormalized = true;
+        }
 
         if(firstOne == -1){
             FinalExponent = 0;
@@ -232,6 +273,9 @@ public class binary {
         }
         
         String exponentRep = decimalToBinary(FinalExponent);
+        while (exponentRep.length() < 5) {
+            exponentRep = "0" + exponentRep;
+        }
 
         if(FinalExponent == 31){ //when infinity set mantissa to all 0
             for(int i=0; i<binaryArray.length; i++){
@@ -239,11 +283,14 @@ public class binary {
             }
         }
 
-        char[] mantissaChar = Mantissa(binaryArray);
+        
+        char[] mantissaChar; 
         if(denormalized == true){
-            
+            mantissaChar = denomalizedMantissa(binaryArray, difference);
+        }else {
+            mantissaChar = Mantissa(binaryArray);
         }
-
+        
         mantissaChar = padMantissa(mantissaChar);
         String mantissa = new String(mantissaChar);
         char[] finalInBinaryTemp = combineAll(signBit, exponentRep, mantissa);
@@ -253,7 +300,7 @@ public class binary {
         System.out.println("Sign Bit: " + signBit);
         System.out.println("Exponent Representation: " + exponentRep);
         System.out.println("Mantissa: " + mantissa);
-        //System.out.println("Binary: " + finalInBinary);
+        System.out.println("Binary: " + finalInBinary);
         System.out.println("Hex: " + finalInHex);
         
     }
