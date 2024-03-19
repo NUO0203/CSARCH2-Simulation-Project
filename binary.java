@@ -205,6 +205,21 @@ public class binary {
     
         return result;
     }
+
+    public static char[] addDecimalIfNeeded(char[] binaryArray) {
+        String binaryString = new String(binaryArray);
+        int dotIndex = binaryString.indexOf('.');
+
+        if (dotIndex == -1) {
+            char[] newArray = new char[binaryArray.length + 2];
+            System.arraycopy(binaryArray, 0, newArray, 0, binaryArray.length);
+            newArray[binaryArray.length] = '.';
+            newArray[binaryArray.length + 1] = '0';
+            return newArray;
+        }
+
+        return binaryArray;
+    }
     
 
 
@@ -228,13 +243,15 @@ public class binary {
         }
 
         int signBit = checkSign(binaryArray); 
-
+        binaryArray = addDecimalIfNeeded(binaryArray);
         binaryArray = removeSign(binaryArray); 
         binaryArray = removeLeadingZeros(binaryArray); 
         String binaryString = new String(binaryArray);
         int dotIndex = binaryString.indexOf('.');
+
         int firstOne = findFirstOneIndex(binaryArray);
         int ePlus = -1;
+        
 
         if(dotIndex!=0 && dotIndex !=1){ //there's a 1 before the decimal (but there's a dot)
             ePlus = exponentInput + dotIndex-1;
