@@ -220,13 +220,30 @@ public class binary {
         }
 
         int FinalExponent = 15;
+        boolean denormalized = false;
         FinalExponent = FinalExponent + ePlus;
+        
+
         if(firstOne == -1){
             FinalExponent = 0;
         }
+        if(FinalExponent >= 31){ // infinity
+            FinalExponent = 31;
+        }
+        
         String exponentRep = decimalToBinary(FinalExponent);
 
+        if(FinalExponent == 31){ //when infinity set mantissa to all 0
+            for(int i=0; i<binaryArray.length; i++){
+                binaryArray[i] = 0;
+            }
+        }
+
         char[] mantissaChar = Mantissa(binaryArray);
+        if(denormalized == true){
+            
+        }
+
         mantissaChar = padMantissa(mantissaChar);
         String mantissa = new String(mantissaChar);
         char[] finalInBinaryTemp = combineAll(signBit, exponentRep, mantissa);

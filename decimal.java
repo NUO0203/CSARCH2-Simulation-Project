@@ -261,11 +261,24 @@ public class decimal {
         if(firstOne == -1){
             FinalExponent = 0;
         }
+        if(FinalExponent >= 31){ // infinity
+            FinalExponent = 31;
+        }
+      
         String exponentRep = decimalToBinary(FinalExponent);
         if (exponentRep.endsWith(".")) {
             exponentRep = exponentRep.substring(0, exponentRep.length() - 1);
         }
+        if (exponentRep.equals("0")) {
+            exponentRep = "00000";
+        }
 
+
+        if(FinalExponent == 31){ //if infinity set mantissa to all 0
+            for(int i=0; i<binaryArray.length; i++){
+                binaryArray[i] = 0;
+            }
+        }
         char[] mantissaChar = Mantissa(binaryArray);
         mantissaChar = padMantissa(mantissaChar);
         String mantissa = new String(mantissaChar);
