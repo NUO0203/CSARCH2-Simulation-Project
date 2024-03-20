@@ -1,44 +1,4 @@
-/*
-
-function decimalToBinary(decimal) {
-    if (decimal === 0) {
-      return "0"; // Special case: if decimal is 0, return "0"
-    }
-  
-    let binaryStringBuilder = "";
-  
-    // Convert decimal to binary by repeated division by 2
-    while (decimal > 0) {
-      let remainder = decimal % 2;
-      binaryStringBuilder = remainder + binaryStringBuilder; // Insert the remainder at the beginning of the string
-      decimal = Math.floor(decimal / 2);
-    }
-  
-    return binaryStringBuilder;
-  }
-  
-  function binaryToHexadecimal(binaryInput) {
-    // Convert the binary input to a string
-    let binaryString = binaryInput.join('');
-  
-    // Convert binary string to decimal integer
-    let decimalValue = parseInt(binaryString, 2);
-  
-    // Convert decimal integer to hexadecimal string
-    let hexadecimal = decimalValue.toString(16).toUpperCase();
-  
-    // Pad with zeros if necessary
-    while (hexadecimal.length < 4) {
-      hexadecimal = "0" + hexadecimal;
-    }
-  
-    return hexadecimal; // Convert to uppercase for consistency
-  }
-
-  
-  */
-  
-  function checkSign(binaryArray) {
+    function checkSign(binaryArray) {
     if (binaryArray.length > 0 && binaryArray[0] === '-') {
       return 1; // If first element is '-', return 1
     } else {
@@ -146,7 +106,7 @@ function addDecimalIfNeeded(binaryArray) {
         return binaryArray;
     }
 
-      function Mantissa(binaryArray) {
+    function Mantissa(binaryArray) {
         const firstOneIndex = findFirstOneIndex(binaryArray);
         if (firstOneIndex === -1) {
           // If '1' is not found, return an empty array
@@ -299,6 +259,7 @@ function submitForm() {
             binaryArray[i] = '0'; // Set each element of binaryArray to '0'
         }
     }
+
 
     let mantissaChar;
     if (denormalized === true) {
