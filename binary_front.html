@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Form</title>
+<script src="binary_back.js"></script> <!-- Link to your JavaScript file -->
+</head>
+<body>
+  <h2>Enter a String and an Integer:</h2>
+  <form>
+    <label for="inputString">String:</label>
+    <input type="text" id="inputString" name="inputString"><br><br>
+    
+    <label for="inputInteger">Integer:</label>
+    <input type="number" id="inputInteger" name="inputInteger"><br><br>
+
+    <button type="button" onclick="submitForm()">Submit</button>
+  </form>
+
+  <!-- Output elements -->
+  <div id="outputSign"></div>
+  <div id="outputExponentRep"></div>
+  <div id="outputMantissa"></div>
+  
+</body>
+</html>
