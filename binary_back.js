@@ -212,33 +212,29 @@ function addDecimalIfNeeded(binaryArray) {
     
         return paddedMantissa;
     }
-/*
-    function combineAll(signBit, exponentRep, mantissa) {
-        // Convert sign bit, exponent representation, and mantissa to arrays
-        let signBitArray = signBit.toString().split('');
-        let exponentRepArray = exponentRep.split('');
-        let mantissaArray = mantissa.split('');
-      
-        // Calculate the total length of the combined array
-        let totalLength = signBitArray.length + exponentRepArray.length + mantissaArray.length;
-      
-        // Create the combined array
-        let combinedArray = new Array(totalLength);
-      
-        // Copy each array into the combined array
-        let index = 0;
-        for (let i = 0; i < signBitArray.length; i++) {
-          combinedArray[index++] = signBitArray[i];
+    
+    function combineAll(signBit, exponentRep, mantissaChar) {
+        return signBit + exponentRep + mantissaChar.join('');
+    }
+
+    function binaryToBeDisplayed(signBit, exponentRep, mantissaChar) {
+        return signBit + " " + exponentRep + " " + mantissaChar.join('');
+    }
+
+    function binaryToHexadecimal(finalInBinary) {
+        // Convert the binary string to decimal integer
+        let decimalValue = parseInt(finalInBinary, 2);
+    
+        // Convert decimal integer to hexadecimal string
+        let hexadecimal = decimalValue.toString(16).toUpperCase();
+    
+        // Pad with zeros if necessary to ensure 4-digit hexadecimal representation
+        while (hexadecimal.length < 4) {
+            hexadecimal = "0" + hexadecimal;
         }
-        for (let i = 0; i < exponentRepArray.length; i++) {
-          combinedArray[index++] = exponentRepArray[i];
-        }
-        for (let i = 0; i < mantissaArray.length; i++) {
-          combinedArray[index++] = mantissaArray[i];
-        }
-      
-        return combinedArray;
-      } */
+    
+        return hexadecimal; // Convert to uppercase for consistency
+    }
     
 
 
@@ -315,12 +311,15 @@ function submitForm() {
 
     // Display the input values in the HTML document
 
+    let finalInBinary = combineAll(signBit, exponentRep, mantissaChar);
+    let binaryStringDisplayed = binaryToBeDisplayed(signBit, exponentRep, mantissaChar);
+    let hexadecimal = binaryToHexadecimal(finalInBinary);
 
     document.getElementById("outputSign").textContent = "Sign: " + signBit;
     document.getElementById("outputExponentRep").textContent = "ExponentRep: " + exponentRep;
     document.getElementById("outputMantissa").textContent = "Mantissa: " + mantissaChar.join('');
-    
-    
+    document.getElementById("outputBinary").textContent = "Binary: " + binaryStringDisplayed;
+    document.getElementById("outputHex").textContent = "Hex: " + hexadecimal;
 }
 
   

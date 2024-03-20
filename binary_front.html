@@ -7,21 +7,25 @@
 <script src="binary_back.js"></script> <!-- Link to your JavaScript file -->
 </head>
 <body>
-  <h2>Enter a String and an Integer:</h2>
+  <h2>Enter a Significand and Exponent (Binary):</h2>
   <form>
-    <label for="inputString">String:</label>
+    <label for="inputString">Significand:</label>
     <input type="text" id="inputString" name="inputString"><br><br>
     
-    <label for="inputInteger">Integer:</label>
+    <label for="inputInteger">Exponent:</label>
     <input type="number" id="inputInteger" name="inputInteger"><br><br>
 
     <button type="button" onclick="submitForm()">Submit</button>
   </form>
 
   <!-- Output elements -->
+  <br>
   <div id="outputSign"></div>
   <div id="outputExponentRep"></div>
   <div id="outputMantissa"></div>
+  <br>
+  <div id="outputBinary"></div>
+  <div id="outputHex"></div>
   
 </body>
 </html>
