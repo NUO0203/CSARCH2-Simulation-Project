@@ -165,6 +165,26 @@ function binaryToHexadecimal(finalInBinary) {
     return hexadecimal; // Convert to uppercase for consistency
 }
 
+function removeLeadingZeroesBeforeOneOrDot(binaryArray) {
+    let firstOneOrDotIndex = binaryArray.findIndex(element => element === '1' || element === '.');
+    if (firstOneOrDotIndex === -1) {
+        // '1' or '.' not found, no leading zeros to remove
+        return binaryArray;
+    }
+
+    let firstNonZeroIndex = firstOneOrDotIndex;
+    for (let i = firstOneOrDotIndex - 1; i >= 0; i--) {
+        if (binaryArray[i] !== '0') {
+            firstNonZeroIndex = i + 1;
+            break;
+        }
+    }
+
+    let resultArray = binaryArray.slice(firstNonZeroIndex, firstOneOrDotIndex);
+    resultArray.push(...binaryArray.slice(firstOneOrDotIndex));
+
+    return resultArray;
+}
 
 function submitForm() {
     var DecimalInput = document.getElementById("inputString").value;
@@ -172,10 +192,13 @@ function submitForm() {
     exponentInput = parseInt(exponentInput);
     DecimalInput = parseFloat(DecimalInput); // Corrected variable name
 
+    let specase = "None";
+
     let signBit = checkSign(DecimalInput);
     DecimalInput = Math.abs(DecimalInput);
 
     var binaryArray = decimalToBinary(DecimalInput).split('');
+    binaryArray = removeLeadingZeroesBeforeOneOrDot(binaryArray);
 
     let dotIndex = binaryArray.indexOf('.');
 
@@ -188,8 +211,10 @@ function submitForm() {
         ePlus = exponentInput + (-firstOne);
     } else if (dotIndex === -1) { // No decimal at all or dotIndex is 1
         ePlus = exponentInput;
+    } else {
+      ePlus = exponentInput;
     }
-
+    
     let FinalExponent = 15;
     let denormalized = false;
     FinalExponent = FinalExponent + ePlus;
@@ -202,13 +227,16 @@ function submitForm() {
         console.log(difference);
         FinalExponent = 0;
         denormalized = true;
+        specase = "Denormalize";
     }
 
     if(firstOne == -1){
         FinalExponent = 0;
+        specase = "Zero";
     }
     if(FinalExponent >= 31){ // infinity
         FinalExponent = 31;
+        specase = "Infinity";
     }
 
     let exponentRep = decimalToBinary(FinalExponent);
@@ -244,5 +272,6 @@ function submitForm() {
     document.getElementById("outputMantissa").textContent = "Mantissa: " + mantissaChar.join('');
     document.getElementById("outputBinary").textContent = "Binary: " + binaryStringDisplayed;
     document.getElementById("outputHex").textContent = "Hex: " + hexadecimal;
+    document.getElementById("outputSpeCase").textContent = "Special Case: " + specase;
 
 }

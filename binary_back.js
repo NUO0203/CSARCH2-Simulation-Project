@@ -205,6 +205,8 @@ function submitForm() {
     var exponentInput = document.getElementById("inputInteger").value;
     exponentInput = parseInt(exponentInput);
 
+    let specase = "None";
+
     let binaryArray = new Array(binaryInput.length);
     for (let i = 0; i < binaryInput.length; i++) {
         binaryArray[i] = binaryInput.charAt(i);
@@ -226,6 +228,8 @@ function submitForm() {
         ePlus = exponentInput + (-firstOne);
     } else if (dotIndex === -1) { // No decimal at all or dotIndex is 1
         ePlus = exponentInput;
+    } else {
+      ePlus = exponentInput;
     }
 
     let FinalExponent = 15;
@@ -240,13 +244,16 @@ function submitForm() {
         console.log(difference);
         FinalExponent = 0;
         denormalized = true;
+        specase = "Denormalize";
     }
     
     if(firstOne == -1){
         FinalExponent = 0;
+        specase = "Zero";
     }
     if(FinalExponent >= 31){ // infinity
         FinalExponent = 31;
+        specase = "Infinity";
     }
 
     let exponentRep = decimalToBinary(FinalExponent);
@@ -258,6 +265,7 @@ function submitForm() {
         for (let i = 0; i < binaryArray.length; i++) {
             binaryArray[i] = '0'; // Set each element of binaryArray to '0'
         }
+        
     }
 
 
@@ -283,6 +291,7 @@ function submitForm() {
     document.getElementById("outputMantissa").textContent = "Mantissa: " + mantissaChar.join('');
     document.getElementById("outputBinary").textContent = "Binary: " + binaryStringDisplayed;
     document.getElementById("outputHex").textContent = "Hex: " + hexadecimal;
+    document.getElementById("outputSpeCase").textContent = "Special Case: " + specase;
 }
 
   
