@@ -198,7 +198,7 @@ function addDecimalIfNeeded(binaryArray) {
     
 function isValidBinary(binaryInput) {
     // Regular expression to match binary numbers with optional decimal point
-    const binaryRegex = /^[01]+(\.[01]+)?$/;
+    const binaryRegex = /^-?[01]+(\.[01]+)?$/;
     return binaryRegex.test(binaryInput);
 }
 
