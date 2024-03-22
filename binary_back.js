@@ -1,4 +1,4 @@
-    function checkSign(binaryArray) {
+function checkSign(binaryArray) {
     if (binaryArray.length > 0 && binaryArray[0] === '-') {
       return 1; // If first element is '-', return 1
     } else {
@@ -196,7 +196,11 @@ function addDecimalIfNeeded(binaryArray) {
         return hexadecimal; // Convert to uppercase for consistency
     }
     
-
+function isValidBinary(binaryInput) {
+    // Regular expression to match binary numbers with optional decimal point
+    const binaryRegex = /^[01]+(\.[01]+)?$/;
+    return binaryRegex.test(binaryInput);
+}
 
 
 // Function to fetch input values and display them in the HTML document
@@ -204,6 +208,11 @@ function submitForm() {
     var binaryInput = document.getElementById("inputString").value;
     var exponentInput = document.getElementById("inputInteger").value;
     exponentInput = parseInt(exponentInput);
+
+    if (!isValidBinary(binaryInput)) {
+        alert("Invalid binary input. Please enter a valid binary number.");
+        return;
+    }
 
     let specase = "None";
 
