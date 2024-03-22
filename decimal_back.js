@@ -180,7 +180,7 @@ function submitForm() {
     let dotIndex = binaryArray.indexOf('.');
 
     let firstOne = findFirstOneIndex(binaryArray);
-    let ePlus = -1;
+    let ePlus = 0;
 
     if (dotIndex !== 0 && dotIndex !== 1) { // There's a 1 before the decimal (and there's a dot)
         ePlus = exponentInput + (dotIndex - 1);
@@ -231,6 +231,8 @@ function submitForm() {
     }
 
     mantissaChar = padMantissa(mantissaChar);
+
+    mantissaChar = mantissaChar.slice(0, 10);
 
     let finalInBinary = combineAll(signBit, exponentRep, mantissaChar);
     let binaryStringDisplayed = binaryToBeDisplayed(signBit, exponentRep, mantissaChar);
