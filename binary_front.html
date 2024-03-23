@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>(Binary) Binary-16 floating point converter</title>
 <script src="binary_back.js"></script> <!-- Link to your JavaScript file -->
+<script src="FileSaver.js"></script>
 </head>
 <body>
   <h2>Enter a Significand and Exponent (Binary):</h2>
@@ -16,6 +17,7 @@
     <input type="number" id="inputInteger" name="inputInteger"><br><br>
 
     <button type="button" onclick="submitForm()">Submit</button>
+    <button id="createFileBtn" type="button" onclick="CreateTextFile();" disabled>Create Text File</button>
   </form>
 
   <!-- Output elements -->

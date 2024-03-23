@@ -195,12 +195,29 @@ function addDecimalIfNeeded(binaryArray) {
     
         return hexadecimal; // Convert to uppercase for consistency
     }
-    
-function isValidBinary(binaryInput) {
-    // Regular expression to match binary numbers with optional decimal point
-    const binaryRegex = /^-?[01]+(\.[01]+)?$/;
-    return binaryRegex.test(binaryInput);
-}
+
+    function isValidBinary(binaryInput) {
+      // Regular expression to match binary numbers with optional decimal point
+      const binaryRegex = /^-?[01]+(\.[01]+)?$/;
+  
+      // Regular expression to match the square root of a negative integer in binary format
+      const sqrtNegativeRegex = /^SQRT\(-?[01]+\)$/;
+  
+      // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
+      const nanRegex = /^(?:NaN|nan)$/i;
+  
+      // Regular expression to match logarithms of negative integers in the format "log(negative integer)"
+      const logNegativeRegex = /^log\(-\d+\)$/;
+  
+      return binaryRegex.test(binaryInput) || sqrtNegativeRegex.test(binaryInput) || nanRegex.test(binaryInput) || logNegativeRegex.test(binaryInput);
+  }
+
+let signBit_txt;
+let exponentRep_txt;
+let mantissaChar_txt;
+let binaryStringDisplayed_txt;
+let hexadecimal_txt;
+let specase_txt;
 
 
 // Function to fetch input values and display them in the HTML document
@@ -295,12 +312,58 @@ function submitForm() {
     let binaryStringDisplayed = binaryToBeDisplayed(signBit, exponentRep, mantissaChar);
     let hexadecimal = binaryToHexadecimal(finalInBinary);
 
+    signBit_txt = signBit;
+    exponentRep_txt = exponentRep;
+    mantissaChar_txt = mantissaChar.join('');
+    binaryStringDisplayed_txt = binaryStringDisplayed;
+    hexadecimal_txt = hexadecimal;
+    specase_txt = specase;
+
     document.getElementById("outputSign").textContent = "Sign: " + signBit;
     document.getElementById("outputExponentRep").textContent = "ExponentRep: " + exponentRep;
     document.getElementById("outputMantissa").textContent = "Mantissa: " + mantissaChar.join('');
     document.getElementById("outputBinary").textContent = "Binary: " + binaryStringDisplayed;
     document.getElementById("outputHex").textContent = "Hex: " + hexadecimal;
     document.getElementById("outputSpeCase").textContent = "Special Case: " + specase;
+
+    document.getElementById('createFileBtn').disabled = false;
 }
+
+// Define the saveAs function using FileSaver.js
+function saveAs(blob, filename) {
+  if (typeof navigator.msSaveBlob !== 'undefined') {
+    // For IE and Edge browsers
+    navigator.msSaveBlob(blob, filename);
+  } else {
+    // For other browsers
+    var link = document.createElement('a');
+    if (link.download !== undefined) {
+      var url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } else {
+      console.error('File saving is not supported by your browser.');
+    }
+  }
+}
+
+// Your existing CreateTextFile function
+function CreateTextFile() {
+  var blob = new Blob(["Sign Bit: " + signBit_txt + "\n" +
+                        "Exponent Representation: " + exponentRep_txt + "\n" +
+                        "Mantissa: " + mantissaChar_txt + "\n" +
+                        "Binary: " + binaryStringDisplayed_txt + "\n" +
+                        "Hexadecimal: " + hexadecimal_txt + "\n" +
+                        "Special Case: " + specase_txt], {
+     type: "text/plain;charset=utf-8",
+  });
+  saveAs(blob, "download.txt");
+}
+
 
   
