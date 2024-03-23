@@ -186,10 +186,60 @@ function removeLeadingZeroesBeforeOneOrDot(binaryArray) {
     return resultArray;
 }
 
+function isValidDecimal(binaryInput) {
+    // Regular expression to match binary numbers with optional decimal point
+    const binaryRegex = /^[-+]?[0-9]*\.?[0-9]+$/;
+
+    // Regular expression to match the square root of a negative integer in binary format
+    const sqrtNegativeRegex = /^SQRT\(-\d+\)$/;
+
+    // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
+    const nanRegex = /^(?:NaN|nan)$/i;
+
+    // Regular expression to match logarithms of negative integers in the format "log(negative integer)"
+    const logNegativeRegex = /^log\(-\d+\)$/;
+
+    return binaryRegex.test(binaryInput) || sqrtNegativeRegex.test(binaryInput) || nanRegex.test(binaryInput) || logNegativeRegex.test(binaryInput);
+}
+
+function isItNaN(binaryInput) {
+
+    // Regular expression to match the square root of a negative integer in binary format
+    const sqrtNegativeRegex = /^SQRT\(-\d+\)$/;
+
+    // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
+    const nanRegex = /^(?:NaN|nan)$/i;
+
+    // Regular expression to match logarithms of negative integers in the format "log(negative integer)"
+    const logNegativeRegex = /^log\(-\d+\)$/;
+
+    return sqrtNegativeRegex.test(binaryInput) || nanRegex.test(binaryInput) || logNegativeRegex.test(binaryInput);
+}
+
+let signBit_txt;
+let exponentRep_txt;
+let mantissaChar_txt;
+let binaryStringDisplayed_txt;
+let hexadecimal_txt;
+let specase_txt;
+
 function submitForm() {
     var DecimalInput = document.getElementById("inputString").value;
     var exponentInput = document.getElementById("inputInteger").value;
     exponentInput = parseInt(exponentInput);
+
+    if (!isValidDecimal(DecimalInput)) {
+        alert("Invalid Decimal input. Please enter a valid Decimal number.");
+        return;
+    }
+
+    let SpecialCaseNan = false;
+
+    if (isItNaN(DecimalInput)) {
+        SpecialCaseNan = true;
+      }
+
+
     DecimalInput = parseFloat(DecimalInput); // Corrected variable name
 
     let specase = "None";
@@ -266,6 +316,23 @@ function submitForm() {
     let binaryStringDisplayed = binaryToBeDisplayed(signBit, exponentRep, mantissaChar);
     let hexadecimal = binaryToHexadecimal(finalInBinary);
     
+    if (SpecialCaseNan === true) {
+        signBit = 0;
+        exponentRep = "11111";
+        mantissaChar = "1000000000";
+        mantissaChar = mantissaChar.split('');
+        binaryStringDisplayed = "0 11111 1000000000";
+        hexadecimal = "7E00";
+        specase = "NaN (Quiet NaN)";
+      }
+  
+      signBit_txt = signBit;
+      exponentRep_txt = exponentRep;
+      mantissaChar_txt = mantissaChar.join('');
+      binaryStringDisplayed_txt = binaryStringDisplayed;
+      hexadecimal_txt = hexadecimal;
+      specase_txt = specase;
+    
 
     document.getElementById("outputSign").textContent = "Sign: " + signBit;
     document.getElementById("outputExponentRep").textContent = "ExponentRep: " + exponentRep;
@@ -273,5 +340,42 @@ function submitForm() {
     document.getElementById("outputBinary").textContent = "Binary: " + binaryStringDisplayed;
     document.getElementById("outputHex").textContent = "Hex: " + hexadecimal;
     document.getElementById("outputSpeCase").textContent = "Special Case: " + specase;
-
+    
+    document.getElementById('createFileBtn').disabled = false;
 }
+
+function saveAs(blob, filename) {
+    if (typeof navigator.msSaveBlob !== 'undefined') {
+      // For IE and Edge browsers
+      navigator.msSaveBlob(blob, filename);
+    } else {
+      // For other browsers
+      var link = document.createElement('a');
+      if (link.download !== undefined) {
+        var url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      } else {
+        console.error('File saving is not supported by your browser.');
+      }
+    }
+  }
+  
+  // Your existing CreateTextFile function
+  function CreateTextFile() {
+    var blob = new Blob(["Sign Bit: " + signBit_txt + "\n" +
+                          "Exponent Representation: " + exponentRep_txt + "\n" +
+                          "Mantissa: " + mantissaChar_txt + "\n" +
+                          "Binary: " + binaryStringDisplayed_txt + "\n" +
+                          "Hexadecimal: " + hexadecimal_txt + "\n" +
+                          "Special Case: " + specase_txt], {
+       type: "text/plain;charset=utf-8",
+    });
+    saveAs(blob, "download.txt");
+  }
+  

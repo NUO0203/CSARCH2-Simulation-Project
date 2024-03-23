@@ -201,7 +201,7 @@ function addDecimalIfNeeded(binaryArray) {
       const binaryRegex = /^-?[01]+(\.[01]+)?$/;
   
       // Regular expression to match the square root of a negative integer in binary format
-      const sqrtNegativeRegex = /^SQRT\(-?[01]+\)$/;
+      const sqrtNegativeRegex = /^SQRT\(-\d+\)$/;
   
       // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
       const nanRegex = /^(?:NaN|nan)$/i;
@@ -215,7 +215,7 @@ function addDecimalIfNeeded(binaryArray) {
   function isItNaN(binaryInput) {
 
     // Regular expression to match the square root of a negative integer in binary format
-    const sqrtNegativeRegex = /^SQRT\(-?[01]+\)$/;
+    const sqrtNegativeRegex = /^SQRT\(-\d+\)$/;
 
     // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
     const nanRegex = /^(?:NaN|nan)$/i;
