@@ -212,6 +212,20 @@ function addDecimalIfNeeded(binaryArray) {
       return binaryRegex.test(binaryInput) || sqrtNegativeRegex.test(binaryInput) || nanRegex.test(binaryInput) || logNegativeRegex.test(binaryInput);
   }
 
+  function isItNaN(binaryInput) {
+
+    // Regular expression to match the square root of a negative integer in binary format
+    const sqrtNegativeRegex = /^SQRT\(-?[01]+\)$/;
+
+    // Regular expression to match "Nan", "NaN", or "nan" (case-insensitive)
+    const nanRegex = /^(?:NaN|nan)$/i;
+
+    // Regular expression to match logarithms of negative integers in the format "log(negative integer)"
+    const logNegativeRegex = /^log\(-\d+\)$/;
+
+    return sqrtNegativeRegex.test(binaryInput) || nanRegex.test(binaryInput) || logNegativeRegex.test(binaryInput);
+}
+
 let signBit_txt;
 let exponentRep_txt;
 let mantissaChar_txt;
@@ -229,6 +243,11 @@ function submitForm() {
     if (!isValidBinary(binaryInput)) {
         alert("Invalid binary input. Please enter a valid binary number.");
         return;
+    }
+    let SpecialCaseNan = false;
+    
+    if (isItNaN(binaryInput)) {
+      SpecialCaseNan = true;
     }
 
     let specase = "None";
@@ -311,6 +330,16 @@ function submitForm() {
     let finalInBinary = combineAll(signBit, exponentRep, mantissaChar);
     let binaryStringDisplayed = binaryToBeDisplayed(signBit, exponentRep, mantissaChar);
     let hexadecimal = binaryToHexadecimal(finalInBinary);
+    
+    if (SpecialCaseNan === true) {
+      signBit = 0;
+      exponentRep = "11111";
+      mantissaChar = "1000000000";
+      mantissaChar = mantissaChar.split('');
+      binaryStringDisplayed = "0 11111 1000000000";
+      hexadecimal = "7E00";
+      specase = "NaN (Quiet NaN)";
+    }
 
     signBit_txt = signBit;
     exponentRep_txt = exponentRep;
